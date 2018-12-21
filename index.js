@@ -230,25 +230,6 @@ HashRing.prototype.hash = function hash(key) {
 };
 
 /**
- * Digest hash so we can make a numeric representation from the hash.
- *
- * @param {String} key The key that needs to be hashed.
- * @returns {Array}
- * @api private
- */
-HashRing.prototype.digest = function digest(key) {
-  var hash = this.hash(key +'');
-
-  // Support for Node 0.10 which returns buffers so we don't need charAt
-  // lookups.
-  if ('string' !== typeof hash) return hash;
-
-  return hash.split('').map(function charCode(char) {
-    return char.charCodeAt(0);
-  });
-};
-
-/**
  * Get the hashed value for the given key.
  *
  * @param {String} key
@@ -256,7 +237,7 @@ HashRing.prototype.digest = function digest(key) {
  * @api private
  */
 HashRing.prototype.hashValue = function hasher(key) {
-  var x = this.digest(key);
+  var x = this.hash(key);
 
   return hashValueHash(x[3], x[2], x[1], x[0]);
 };
